@@ -1,48 +1,101 @@
-let taskDOM = document.querySelector("#task")
-let btnDOM = document.querySelector("#liveToastBtn")
+let inputDOM = document.querySelector("#task")
 let listDOM = document.querySelector("#list")
-let listLengthDOM = document.getElementsByTagName("li")
+//let listLengthDOM = document.getElementsByTagName("li")
 
-for(let i = 0; i < listLengthDOM; i++) {
-    let closeButton = document.createElement("span")
-    closeButton.textContent = "\u00D7"
-    closeButton.classList.add("close")
-    closeButton.onclick = removeButton
-    listLengthDOM[i].append(closeButton)
-    listLengthDOM[i].onclick = check
+const checked = (e) => {
+    const item = e.target
+    item.classList.toggle("checked")
 }
 
-function removeButton() {
-    this.parentElement.remove()
+const deleteItem = (e) => {
+    const item = e.target.parentElement
+    item.remove()
+    dltStorage(e.target.previousElementSibling.innerText)
 }
 
-function check() {
-    this.classList.toggle("checked")
-}
+const startConf = () => {
+    let todo = JSON.parse(localStorage.getItem("todo"))
 
-btnDOM.addEventListener("click", addElement)
-
-function addElement() {
-    if(taskDOM.value == "") {
-        $(".error").toast("show")
+    if(!todo) {
+        localStorage.setItem("todo", JSON.stringify([]))
     } else {
-        $(".success").toast("show")
-        let liDOM = document.createElement("li")
-        listDOM.append(liDOM)
-        liDOM.innerHTML = task.value
-        taskDOM.value = ""
-
-        liDOM.onclick = check
-
-        let closeButton = document.createElement("span")
-        closeButton.textContent = "\u00D7"
-        closeButton.classList.add("close")
-        closeButton.onclick = removeButton
-
-        liDOM.append(closeButton)
-        listDOM.append(liDOM)
-        inputElement.value = ""
+        todo.forEach(todo => {
+            addHTML(todo)
+        });
     }
-
-    
 }
+
+const addHTML = (todo) => {
+    const todoDiv = document.createElement("div")
+    todoDiv.classList.add("list-item")
+
+    const newTodo = document.createElement("li")
+    newTodo.classList.add("todo-item")
+    newTodo.addEventListener("click", checked)
+    newTodo.innerHTML = todo
+    todoDiv.appendChild(newTodo)
+
+    const deleteButton = document.createElement("button")
+    deleteButton.textContent = "\u00D7"
+    deleteButton.classList.add("btn-delete")
+
+    deleteButton.addEventListener("click", deleteItem)
+    todoDiv.appendChild(deleteButton)
+    
+    listDOM.appendChild(todoDiv)
+
+}
+
+const newElement = () => {
+    const todoDiv = document.createElement("div")
+    todoDiv.classList.add("list-item")
+
+    const newTodo = document.createElement("li")
+    newTodo.classList.add("todo-item")
+    newTodo.addEventListener("click", checked)
+    newTodo.innerText = inputDOM.value
+    todoDiv.appendChild(newTodo)
+
+    const deleteButton = document.createElement("button")
+    deleteButton.textContent = "\u00D7"
+    deleteButton.classList.add("btn-delete")
+
+    deleteButton.addEventListener("click", deleteItem)
+    todoDiv.appendChild(deleteButton)
+
+    if(inputDOM.value != "") {
+        listDOM.appendChild(todoDiv)
+        loadStorage(inputDOM.value)
+        inputDOM.value = ""
+        $(".success").toast("show")
+    } else {
+        $(".error").toast("show")
+    }
+}
+
+const loadStorage = (text) => {
+    let str = JSON.parse(localStorage.getItem("todo"))
+    let todo;
+    if(str == null) {
+        todo = []
+    } else {
+        todo = JSON.parse(localStorage.getItem("todo"))
+    }
+    todo.push(text)
+    localStorage.setItem("todo", JSON.stringify(todo))
+} 
+
+
+
+const dltStorage = (text) => {
+    let todo = JSON.parse(localStorage.getItem("todo"))
+
+    todo.forEach((element, id) => {
+        if (element === text) {
+          todo.splice(id, 1);
+        }
+      })
+      localStorage.setItem("todo", JSON.stringify(todo));
+}
+
+startConf()

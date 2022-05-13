@@ -5,17 +5,23 @@
 ul {
   margin: 0;
   padding: 0;
+  padding-bottom: 0.3rem;
+  background-color: gray;
+  
 }
 
-ul li {
+ul div li {
   cursor: pointer;
   position: relative;
-  padding: 12px 8px 12px 40px;
-  background: #eee;
+  padding: 8px 8px 5px 20px;
+  background: rgb(237, 229, 229);
   font-size: 18px;
   transition: 0.2s;
   list-style-type: none;
-
+  width: 100%;
+  margin-left: 0.3rem;
+  margin-bottom:0.3rem;
+  
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -34,6 +40,7 @@ ul li.checked {
   background: #276678;
   color: #fff;
   text-decoration: line-through;
+  padding: 5px 8px 5px 32px;
 }
 
 ul li.checked::before {
@@ -63,7 +70,7 @@ ul li.checked::before {
 }
 
 .header {
-  background-color: #f78501;
+  background-color: gray;
   padding: 30px 40px;
   color: white;
   text-align: center;
@@ -100,8 +107,47 @@ input {
   cursor: pointer;
   transition: 0.3s;
   border-radius: 0;
+  height: 44px;
 }
 
 .button:hover {
+  background-color: rgb(190, 188, 188);
+}
+
+.btn-delete {
+  padding: 10px;
+  width: 12%;
+  height:5%;
+  background: #d9d9d9;
+  color: #555;
+  float: right;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  border: none;
+  margin-left: 0.3rem;
+  margin-bottom:0.3rem;
+  margin-right: 0.3rem;
+  font-weight: bolder;
+  
+}
+
+.btn-delete:hover {
   background-color: #bbb;
+}
+
+.list{
+  display:flex;
+  justify-content:space-between;
+  background: #eee;
+  margin-top: 2%; 
+}
+
+.list-item{
+  display: flex;
+}
+
+.todo-item{
+  text-align: left;
 }
